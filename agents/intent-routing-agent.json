@@ -1,0 +1,28 @@
+{
+  "id": "intent-routing-agent",
+  "label": "Intent Inference and Route Selection",
+  "type": "agent",
+  "agentId": "pipeline_intent_classifier",
+  "description": "Infers the likely meaning of the question and routes it into parallel document and SQL retrieval.",
+  "inputs": [],
+  "outputs": [],
+  "reuseDecision": "reuse",
+  "catalogAgentName": "Pipeline Intent Classifier",
+  "rationale": "This catalog agent directly matches the routing capability and is suitable for inferring broad intent and selecting downstream paths.",
+  "explanation": {
+    "purpose": "Infer likely intent for broad questions and route the request into the document and structured-data retrieval paths.",
+    "role_in_workflow": "After intake, this step interprets what the user is really asking, especially when the prompt is broad or underspecified. It then sends the same request into parallel retrieval branches so document evidence and database evidence can be gathered quickly in the same run.",
+    "why_it_exists": "This node reuses the Pipeline Intent Classifier because it is a direct catalog fit for routing decisions. It is necessary because the user explicitly said that if a question is too broad, the system should guess the likely intent and answer rather than stop for clarification.",
+    "consumes_from": [
+      "Question Intake Gateway",
+      "user question"
+    ],
+    "feeds_into": [
+      "Document Retrieval",
+      "Structured Data Query"
+    ],
+    "chat_relationship": "The user said broad questions should be handled by guessing likely intent and answering, and also wanted one answer that can combine documents and tables, so this step performs that inference and launches both retrieval routes.",
+    "execution_summary": "Infers the likely meaning of the question and routes it into parallel document and SQL retrieval."
+  },
+  "status": "scaffold"
+}
