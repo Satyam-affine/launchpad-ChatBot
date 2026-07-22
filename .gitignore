@@ -1,0 +1,7 @@
+# Agentic LaunchPad export
+__pycache__/
+.venv/
+node_modules/
+.env
+*.pyc
+.DS_Store
