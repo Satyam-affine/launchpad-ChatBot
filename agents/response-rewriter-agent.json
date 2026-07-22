@@ -1,0 +1,27 @@
+{
+  "id": "response-rewriter-agent",
+  "label": "Confidence-Aware Response Delivery",
+  "type": "agent",
+  "agentId": "final_answer_rewriter",
+  "description": "Polishes the grounded draft into the final user response with confidence and conflict wording preserved.",
+  "inputs": [],
+  "outputs": [],
+  "reuseDecision": "adapt",
+  "catalogAgentName": "Final Answer Rewriter",
+  "rationale": "This agent can be adapted to preserve conflict flags and append confidence wording while rewriting the final response for users.",
+  "explanation": {
+    "purpose": "Convert the grounded draft into concise user-facing text that clearly communicates confidence and any source conflicts.",
+    "role_in_workflow": "This is the final presentation step before the answer is returned to the user. It rewrites the synthesized draft for clarity and speed of consumption while preserving the factual content, conflict flags, and confidence wording determined upstream.",
+    "why_it_exists": "This node adapts the Final Answer Rewriter because the existing rewriter is suitable for polishing combined answers but needs to preserve explicit conflict and confidence language for this use case. It exists because the user wanted fast natural-language answers without citations, so the final response must rely on careful wording and guardrails rather than detailed source references.",
+    "consumes_from": [
+      "Grounded Answer Synthesis",
+      "draft answer with evidence status"
+    ],
+    "feeds_into": [
+      "final chatbot response to user"
+    ],
+    "chat_relationship": "The user asked for fast answers in a few seconds, no citations, and answers that still include a confidence note and conflict flagging when needed, so this step formats the final response accordingly without introducing new facts.",
+    "execution_summary": "Polishes the grounded draft into the final user response with confidence and conflict wording preserved."
+  },
+  "status": "scaffold"
+}
