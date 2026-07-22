@@ -1,0 +1,28 @@
+{
+  "id": "document-retrieval-agent",
+  "label": "Document Retrieval",
+  "type": "agent",
+  "agentId": "eryl_semantic_rag_agent_chain",
+  "description": "Finds relevant evidence from approved internal documents for the current question.",
+  "inputs": [],
+  "outputs": [],
+  "reuseDecision": "reuse",
+  "catalogAgentName": "Eryl Semantic RAG Agent Chain",
+  "rationale": "This agent already supports semantic retrieval over indexed internal documents and fits the document evidence path.",
+  "explanation": {
+    "purpose": "Retrieve relevant passages from approved indexed internal documents that may help answer the question.",
+    "role_in_workflow": "This branch handles the unstructured side of the answer. It searches internal PDFs, DOCX files, and other approved document content for semantically relevant passages and forwards that evidence for cross-source comparison.",
+    "why_it_exists": "This node reuses the Eryl Semantic RAG Agent Chain because it already supports semantic retrieval over indexed internal documents. It exists to satisfy the requirement that answers come only from approved internal sources and that document context be combined with tabular facts when needed.",
+    "consumes_from": [
+      "Intent Inference and Route Selection",
+      "document retrieval route"
+    ],
+    "feeds_into": [
+      "Evidence Conflict and Strength Check",
+      "document evidence"
+    ],
+    "chat_relationship": "The user asked for a database plus document chatbot, wanted answers based only on approved internal sources, and wanted document context included in combined answers, which is exactly what this retrieval step provides.",
+    "execution_summary": "Finds relevant evidence from approved internal documents for the current question."
+  },
+  "status": "scaffold"
+}
