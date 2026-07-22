@@ -1,0 +1,30 @@
+{
+  "id": "evidence-conflict-gateway",
+  "label": "Evidence Conflict and Strength Check",
+  "type": "custom",
+  "agentId": null,
+  "description": "Reconciles document and SQL evidence, flags conflicts, and marks evidence strength before answer generation.",
+  "inputs": [],
+  "outputs": [],
+  "reuseDecision": "build",
+  "catalogAgentName": null,
+  "rationale": "No catalog match explicitly covers cross-source conflict detection plus weak-evidence gating, so a custom comparison layer is required.",
+  "explanation": {
+    "purpose": "Compare document and database evidence, detect disagreements, and assess whether support is strong, weak, or incomplete.",
+    "role_in_workflow": "This is the reconciliation checkpoint after both retrieval branches finish. It merges the two evidence streams into a grounded bundle, marks conflicts instead of silently resolving them, and annotates weak evidence so the answering layer knows how cautious to be.",
+    "why_it_exists": "This node is built custom because no catalog match explicitly covered cross-source conflict detection together with weak-evidence handling. It is central to the design because the user asked the system to show both sides and flag disagreements, and to still answer with a confidence note when evidence is weak.",
+    "consumes_from": [
+      "Document Retrieval",
+      "Structured Data Query",
+      "document evidence",
+      "table evidence"
+    ],
+    "feeds_into": [
+      "Grounded Answer Synthesis",
+      "grounded evidence bundle"
+    ],
+    "chat_relationship": "The user said that when documents and database disagree, the chatbot should show both and flag the conflict, and when evidence is weak it should still answer with a confidence note; this step creates exactly those conflict and strength signals.",
+    "execution_summary": "Reconciles document and SQL evidence, flags conflicts, and marks evidence strength before answer generation."
+  },
+  "status": "scaffold"
+}
