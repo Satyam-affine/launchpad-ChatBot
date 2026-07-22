@@ -1,0 +1,28 @@
+{
+  "id": "sql-query-agent",
+  "label": "Structured Data Query",
+  "type": "agent",
+  "agentId": "quin_sql_agent_chain",
+  "description": "Runs read-only SQL to gather the structured evidence needed to answer the question.",
+  "inputs": [],
+  "outputs": [],
+  "reuseDecision": "reuse",
+  "catalogAgentName": "Quin SQL Agent Chain",
+  "rationale": "This agent is a direct fit for read-only SQL generation and execution against internal structured data sources.",
+  "explanation": {
+    "purpose": "Generate and run read-only SQL to fetch relevant rows, facts, or aggregates from internal structured data.",
+    "role_in_workflow": "This branch handles the structured-data side of the answer in parallel with document retrieval. It translates the user\u2019s question into safe read-only SQL, executes it against internal tables, and returns the resulting evidence for downstream comparison and synthesis.",
+    "why_it_exists": "This node reuses the Quin SQL Agent Chain because it is a strong direct fit for SQL generation and execution against internal data sources. It exists because the user wants the chatbot to answer from database data as well as documents, while remaining strictly read-only with no write-back behavior.",
+    "consumes_from": [
+      "Intent Inference and Route Selection",
+      "sql retrieval route"
+    ],
+    "feeds_into": [
+      "Evidence Conflict and Strength Check",
+      "table evidence"
+    ],
+    "chat_relationship": "The user explicitly asked for a database + document chatbot, required read-only Q&A, and wanted combined answers using tabular facts, so this step is the structured-data retrieval path that fulfills those constraints.",
+    "execution_summary": "Runs read-only SQL to gather the structured evidence needed to answer the question."
+  },
+  "status": "scaffold"
+}
