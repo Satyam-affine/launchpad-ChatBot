@@ -1,0 +1,1423 @@
+{
+  "id": "session-1784653133023-k6es1w",
+  "spec": {
+    "status": "ready",
+    "problem_statement": "Internal analysts and managers need a fast, read-only chatbot that can answer questions across both documents and structured database data without relying on outside knowledge.",
+    "fields": {
+      "use_case": {
+        "key": "use_case",
+        "label": "Main goal",
+        "value": "Provide natural-language answers in a few seconds by combining approved internal document content and tabular data into one response, while flagging conflicts and indicating confidence.",
+        "status": "known",
+        "notes": null,
+        "source": "user_answer",
+        "confidence": null
+      },
+      "data_volume": {
+        "key": "data_volume",
+        "label": "How much data",
+        "value": null,
+        "status": "pending",
+        "notes": null,
+        "source": null,
+        "confidence": null
+      },
+      "accuracy_target": {
+        "key": "accuracy_target",
+        "label": "How accurate it must be",
+        "value": "Approved internal sources only; Read-only access; Combine document and table evidence in one answer; Show both and flag when sources conflict; Include confidence note when evidence is weak; Infer likely intent and answer when questions are broad",
+        "status": "known",
+        "notes": null,
+        "source": "user_answer",
+        "confidence": null
+      },
+      "hitl_behavior": {
+        "key": "hitl_behavior",
+        "label": "When someone should review results",
+        "value": "No human review is required in the normal flow because the system is read-only Q&A for internal users.",
+        "status": "known",
+        "notes": null,
+        "source": "user_answer",
+        "confidence": null
+      },
+      "integrations": {
+        "key": "integrations",
+        "label": "Where data comes from and goes",
+        "value": null,
+        "status": "pending",
+        "notes": null,
+        "source": null,
+        "confidence": null
+      },
+      "latency_target": {
+        "key": "latency_target",
+        "label": "How fast answers are needed",
+        "value": null,
+        "status": "pending",
+        "notes": null,
+        "source": null,
+        "confidence": null
+      },
+      "model_preference": {
+        "key": "model_preference",
+        "label": "AI preference",
+        "value": "Use AI to interpret user questions, infer likely intent for broad prompts, combine document and database evidence, detect weak evidence, and generate natural-language answers using only approved internal sources. The model must not use general world knowledge when internal data is silent.",
+        "status": "known",
+        "notes": null,
+        "source": "user_answer",
+        "confidence": null
+      },
+      "deployment_platform": {
+        "key": "deployment_platform",
+        "label": "Where it should run",
+        "value": null,
+        "status": "pending",
+        "notes": null,
+        "source": null,
+        "confidence": null
+      },
+      "architectural_flow": {
+        "key": "architectural_flow",
+        "label": "Order of steps in your process",
+        "value": "User question intake \u2192 Intent inference for broad questions \u2192 Parallel retrieval from document index and database \u2192 Conflict detection across sources \u2192 Answer synthesis from approved internal sources only \u2192 Confidence scoring and response delivery",
+        "status": "known",
+        "notes": null,
+        "source": "user_answer",
+        "confidence": null
+      },
+      "architectural_flow_feedback": {
+        "key": "architectural_flow_feedback",
+        "label": "Check the steps we understood",
+        "value": null,
+        "status": "pending",
+        "notes": null,
+        "source": null,
+        "confidence": null
+      },
+      "architectural_pattern": {
+        "key": "architectural_pattern",
+        "label": "Overall approach",
+        "value": null,
+        "status": "pending",
+        "notes": null,
+        "source": null,
+        "confidence": null
+      },
+      "core_components": {
+        "key": "core_components",
+        "label": "Main parts you need",
+        "value": "User question intake, Intent inference for broad questions, Parallel retrieval from document index and database, Conflict detection across sources, Answer synthesis from approved internal sources only, Confidence scoring and response delivery",
+        "status": "known",
+        "notes": null,
+        "source": "user_answer",
+        "confidence": null
+      },
+      "data_flow": {
+        "key": "data_flow",
+        "label": "Where information comes from and goes",
+        "value": "Analysts and managers submit a natural-language question through the chatbot interface. The system infers likely intent when the question is broad, then retrieves relevant passages from indexed PDF/DOCX documents and relevant rows or aggregates from the internal database in parallel. Retrieved results are compared for conflicts, combined into a single grounded context, and passed to the answer generation layer. The model produces a read-only natural-language answer using only approved internal sources, includes a confidence note when evidence is weak, and flags disagreements by showing both sides rather than choosing one silently. The final answer is returned to the user with no write-back to source systems.",
+        "status": "known",
+        "notes": null,
+        "source": "user_answer",
+        "confidence": null
+      },
+      "orchestration_model": {
+        "key": "orchestration_model",
+        "label": "How steps run (one-by-one or together)",
+        "value": null,
+        "status": "pending",
+        "notes": null,
+        "source": null,
+        "confidence": null
+      },
+      "scalability_constraints": {
+        "key": "scalability_constraints",
+        "label": "How many people use it at once",
+        "value": "Read-only Q&A only; No external knowledge use; Fast answers in a few seconds; No citations required in responses",
+        "status": "known",
+        "notes": null,
+        "source": "user_answer",
+        "confidence": null
+      }
+    },
+    "transcript_summary": "Provide natural-language answers in a few seconds by combining approved internal document content and tabular data into one response, while flagging conflicts and indicating confidence.",
+    "catalog_hints": [],
+    "architecture_blueprint": "## Provide natural-language answers in a few seconds by combining approved internal document content and tabular data into one response, while flagging conflicts and indicating confidence.\n\nInternal analysts and managers need a fast, read-only chatbot that can answer questions across both documents and structured database data without relying on outside knowledge.\n\n### Integrations\n\n\n### HITL\nNo human review is required in the normal flow because the system is read-only Q&A for internal users.",
+    "graph_draft": {
+      "nodes": [
+        {
+          "id": "question-intake-gateway",
+          "label": "Question Intake Gateway",
+          "type": "agent",
+          "agent_id": "pipeline_intent_classifier",
+          "description": "Receives the user\u2019s question and starts the workflow under read-only internal Q&A guardrails.",
+          "required_capability": "routing",
+          "inputs": [],
+          "outputs": []
+        },
+        {
+          "id": "intent-routing-agent",
+          "label": "Intent Inference and Route Selection",
+          "type": "agent",
+          "agent_id": "pipeline_intent_classifier",
+          "description": "Infers the likely meaning of the question and routes it into parallel document and SQL retrieval.",
+          "required_capability": "routing",
+          "inputs": [],
+          "outputs": []
+        },
+        {
+          "id": "document-retrieval-agent",
+          "label": "Document Retrieval",
+          "type": "agent",
+          "agent_id": "eryl_semantic_rag_agent_chain",
+          "description": "Finds relevant evidence from approved internal documents for the current question.",
+          "required_capability": "retrieval",
+          "inputs": [],
+          "outputs": []
+        },
+        {
+          "id": "sql-query-agent",
+          "label": "Structured Data Query",
+          "type": "agent",
+          "agent_id": "quin_sql_agent_chain",
+          "description": "Runs read-only SQL to gather the structured evidence needed to answer the question.",
+          "required_capability": "sql_execution",
+          "inputs": [],
+          "outputs": []
+        },
+        {
+          "id": "evidence-conflict-gateway",
+          "label": "Evidence Conflict and Strength Check",
+          "type": "custom",
+          "agent_id": null,
+          "description": "Reconciles document and SQL evidence, flags conflicts, and marks evidence strength before answer generation.",
+          "required_capability": "sql_generation",
+          "inputs": [],
+          "outputs": []
+        },
+        {
+          "id": "answer-synthesis-agent",
+          "label": "Grounded Answer Synthesis",
+          "type": "agent",
+          "agent_id": "final_answer_consolidation_agent",
+          "description": "Builds a single grounded draft answer from the reconciled internal evidence.",
+          "required_capability": "answer_consolidation",
+          "inputs": [],
+          "outputs": []
+        },
+        {
+          "id": "response-rewriter-agent",
+          "label": "Confidence-Aware Response Delivery",
+          "type": "agent",
+          "agent_id": "final_answer_rewriter",
+          "description": "Polishes the grounded draft into the final user response with confidence and conflict wording preserved.",
+          "required_capability": "answer_consolidation",
+          "inputs": [],
+          "outputs": []
+        }
+      ],
+      "edges": [
+        {
+          "from_id": "question-intake-gateway",
+          "to_id": "intent-routing-agent",
+          "label": "user question"
+        },
+        {
+          "from_id": "intent-routing-agent",
+          "to_id": "document-retrieval-agent",
+          "label": "document retrieval route"
+        },
+        {
+          "from_id": "intent-routing-agent",
+          "to_id": "sql-query-agent",
+          "label": "sql retrieval route"
+        },
+        {
+          "from_id": "document-retrieval-agent",
+          "to_id": "evidence-conflict-gateway",
+          "label": "document evidence"
+        },
+        {
+          "from_id": "sql-query-agent",
+          "to_id": "evidence-conflict-gateway",
+          "label": "table evidence"
+        },
+        {
+          "from_id": "evidence-conflict-gateway",
+          "to_id": "answer-synthesis-agent",
+          "label": "grounded evidence bundle"
+        },
+        {
+          "from_id": "answer-synthesis-agent",
+          "to_id": "response-rewriter-agent",
+          "label": "draft answer with evidence status"
+        }
+      ]
+    },
+    "pipeline_spec": {
+      "problem_statement": "Internal analysts and managers need a fast, read-only chatbot that can answer questions across both documents and structured database data without relying on outside knowledge.",
+      "goal": "Provide natural-language answers in a few seconds by combining approved internal document content and tabular data into one response, while flagging conflicts and indicating confidence.",
+      "inputs": [
+        "Documents (PDF/DOCX)",
+        "Structured tabular data"
+      ],
+      "outputs": [
+        "Natural-language answers"
+      ],
+      "core_components": [
+        "User question intake",
+        "Intent inference for broad questions",
+        "Parallel retrieval from document index and database",
+        "Conflict detection across sources",
+        "Answer synthesis from approved internal sources only",
+        "Confidence scoring and response delivery"
+      ],
+      "data_flow": "Analysts and managers submit a natural-language question through the chatbot interface. The system infers likely intent when the question is broad, then retrieves relevant passages from indexed PDF/DOCX documents and relevant rows or aggregates from the internal database in parallel. Retrieved results are compared for conflicts, combined into a single grounded context, and passed to the answer generation layer. The model produces a read-only natural-language answer using only approved internal sources, includes a confidence note when evidence is weak, and flags disagreements by showing both sides rather than choosing one silently. The final answer is returned to the user with no write-back to source systems.",
+      "model_requirements": "Use AI to interpret user questions, infer likely intent for broad prompts, combine document and database evidence, detect weak evidence, and generate natural-language answers using only approved internal sources. The model must not use general world knowledge when internal data is silent.",
+      "integrations": [],
+      "hitl": "No human review is required in the normal flow because the system is read-only Q&A for internal users.",
+      "validations": [
+        "Approved internal sources only",
+        "Read-only access",
+        "Combine document and table evidence in one answer",
+        "Show both and flag when sources conflict",
+        "Include confidence note when evidence is weak",
+        "Infer likely intent and answer when questions are broad"
+      ],
+      "assumptions": [
+        "Users are internal analysts and managers",
+        "The chatbot is not expected to recommend actions or make risk judgments",
+        "Documents and database content are sufficiently current for operational Q&A",
+        "Users can accept answers without citations",
+        "Fast response time is prioritized over deeper multi-step reasoning"
+      ],
+      "constraints": [
+        "Read-only Q&A only",
+        "No external knowledge use",
+        "Fast answers in a few seconds",
+        "No citations required in responses"
+      ],
+      "edge_cases": [
+        "Documents and database disagree",
+        "Question is too broad or ambiguous",
+        "Weak or insufficient evidence is retrieved",
+        "Relevant information exists in only one source type",
+        "No matching internal data is found"
+      ],
+      "unresolved_questions": [
+        "Expected scale and concurrency",
+        "Failure behavior when retrieval finds little or no relevant data",
+        "Whether documents are static uploads, synced from a shared repository, or both",
+        "Whether the database is one system or several internal data sources",
+        "Whether answers must be filtered by user role or access permissions"
+      ]
+    }
+  },
+  "architecture_plan": {
+    "graph": {
+      "nodes": [
+        {
+          "id": "question-intake-gateway",
+          "label": "Question Intake Gateway",
+          "type": "agent",
+          "agent_id": "pipeline_intent_classifier",
+          "description": "Receives the user\u2019s question and starts the workflow under read-only internal Q&A guardrails.",
+          "required_capability": "routing",
+          "inputs": [],
+          "outputs": []
+        },
+        {
+          "id": "intent-routing-agent",
+          "label": "Intent Inference and Route Selection",
+          "type": "agent",
+          "agent_id": "pipeline_intent_classifier",
+          "description": "Infers the likely meaning of the question and routes it into parallel document and SQL retrieval.",
+          "required_capability": "routing",
+          "inputs": [],
+          "outputs": []
+        },
+        {
+          "id": "document-retrieval-agent",
+          "label": "Document Retrieval",
+          "type": "agent",
+          "agent_id": "eryl_semantic_rag_agent_chain",
+          "description": "Finds relevant evidence from approved internal documents for the current question.",
+          "required_capability": "retrieval",
+          "inputs": [],
+          "outputs": []
+        },
+        {
+          "id": "sql-query-agent",
+          "label": "Structured Data Query",
+          "type": "agent",
+          "agent_id": "quin_sql_agent_chain",
+          "description": "Runs read-only SQL to gather the structured evidence needed to answer the question.",
+          "required_capability": "sql_execution",
+          "inputs": [],
+          "outputs": []
+        },
+        {
+          "id": "evidence-conflict-gateway",
+          "label": "Evidence Conflict and Strength Check",
+          "type": "custom",
+          "agent_id": null,
+          "description": "Reconciles document and SQL evidence, flags conflicts, and marks evidence strength before answer generation.",
+          "required_capability": "sql_generation",
+          "inputs": [],
+          "outputs": []
+        },
+        {
+          "id": "answer-synthesis-agent",
+          "label": "Grounded Answer Synthesis",
+          "type": "agent",
+          "agent_id": "final_answer_consolidation_agent",
+          "description": "Builds a single grounded draft answer from the reconciled internal evidence.",
+          "required_capability": "answer_consolidation",
+          "inputs": [],
+          "outputs": []
+        },
+        {
+          "id": "response-rewriter-agent",
+          "label": "Confidence-Aware Response Delivery",
+          "type": "agent",
+          "agent_id": "final_answer_rewriter",
+          "description": "Polishes the grounded draft into the final user response with confidence and conflict wording preserved.",
+          "required_capability": "answer_consolidation",
+          "inputs": [],
+          "outputs": []
+        }
+      ],
+      "edges": [
+        {
+          "from_id": "question-intake-gateway",
+          "to_id": "intent-routing-agent",
+          "label": "user question"
+        },
+        {
+          "from_id": "intent-routing-agent",
+          "to_id": "document-retrieval-agent",
+          "label": "document retrieval route"
+        },
+        {
+          "from_id": "intent-routing-agent",
+          "to_id": "sql-query-agent",
+          "label": "sql retrieval route"
+        },
+        {
+          "from_id": "document-retrieval-agent",
+          "to_id": "evidence-conflict-gateway",
+          "label": "document evidence"
+        },
+        {
+          "from_id": "sql-query-agent",
+          "to_id": "evidence-conflict-gateway",
+          "label": "table evidence"
+        },
+        {
+          "from_id": "evidence-conflict-gateway",
+          "to_id": "answer-synthesis-agent",
+          "label": "grounded evidence bundle"
+        },
+        {
+          "from_id": "answer-synthesis-agent",
+          "to_id": "response-rewriter-agent",
+          "label": "draft answer with evidence status"
+        }
+      ]
+    },
+    "reuse_decisions": [
+      {
+        "node_id": "question-intake-gateway",
+        "node_label": "Question Intake Gateway",
+        "decision": "reuse",
+        "agent_id": "pipeline_intent_classifier",
+        "agent_name": "Pipeline Intent Classifier",
+        "rationale": "Auto-applied: catalog alternative identified during validation.",
+        "catalog_score": 0.85,
+        "raw_search_score": null,
+        "weak_overall_coverage": false,
+        "required_capability": "routing"
+      },
+      {
+        "node_id": "intent-routing-agent",
+        "node_label": "Intent Inference and Route Selection",
+        "decision": "reuse",
+        "agent_id": "pipeline_intent_classifier",
+        "agent_name": "Pipeline Intent Classifier",
+        "rationale": "This catalog agent directly matches the routing capability and is suitable for inferring broad intent and selecting downstream paths.",
+        "catalog_score": 0.85,
+        "raw_search_score": 0,
+        "weak_overall_coverage": false,
+        "required_capability": "routing"
+      },
+      {
+        "node_id": "document-retrieval-agent",
+        "node_label": "Document Retrieval",
+        "decision": "reuse",
+        "agent_id": "eryl_semantic_rag_agent_chain",
+        "agent_name": "Eryl Semantic RAG Agent Chain",
+        "rationale": "This agent already supports semantic retrieval over indexed internal documents and fits the document evidence path.",
+        "catalog_score": 0.9,
+        "raw_search_score": 0.03154495730996132,
+        "weak_overall_coverage": true,
+        "required_capability": "retrieval"
+      },
+      {
+        "node_id": "sql-query-agent",
+        "node_label": "Structured Data Query",
+        "decision": "reuse",
+        "agent_id": "quin_sql_agent_chain",
+        "agent_name": "Quin SQL Agent Chain",
+        "rationale": "This agent is a direct fit for read-only SQL generation and execution against internal structured data sources.",
+        "catalog_score": 0.85,
+        "raw_search_score": 0,
+        "weak_overall_coverage": false,
+        "required_capability": "sql_execution"
+      },
+      {
+        "node_id": "evidence-conflict-gateway",
+        "node_label": "Evidence Conflict and Strength Check",
+        "decision": "build",
+        "agent_id": null,
+        "agent_name": null,
+        "rationale": "No catalog match explicitly covers cross-source conflict detection plus weak-evidence gating, so a custom comparison layer is required.",
+        "catalog_score": 0,
+        "raw_search_score": null,
+        "weak_overall_coverage": false,
+        "required_capability": "sql_generation"
+      },
+      {
+        "node_id": "answer-synthesis-agent",
+        "node_label": "Grounded Answer Synthesis",
+        "decision": "reuse",
+        "agent_id": "final_answer_consolidation_agent",
+        "agent_name": "Final Answer Consolidation Agent",
+        "rationale": "This agent is the closest direct fit for combining multiple evidence streams into a single grounded answer.",
+        "catalog_score": 0.9,
+        "raw_search_score": 0.0317540317773819,
+        "weak_overall_coverage": true,
+        "required_capability": "answer_consolidation"
+      },
+      {
+        "node_id": "response-rewriter-agent",
+        "node_label": "Confidence-Aware Response Delivery",
+        "decision": "adapt",
+        "agent_id": "final_answer_rewriter",
+        "agent_name": "Final Answer Rewriter",
+        "rationale": "This agent can be adapted to preserve conflict flags and append confidence wording while rewriting the final response for users.",
+        "catalog_score": 0.85,
+        "raw_search_score": 0,
+        "weak_overall_coverage": false,
+        "required_capability": "answer_consolidation"
+      }
+    ],
+    "catalog_matches": [
+      {
+        "agent_id": "final_answer_consolidation_agent",
+        "name": "Final Answer Consolidation Agent",
+        "category": "Sales & Revenue",
+        "origin_client": "Affine Analytics",
+        "origin_project": "Merchandising Vision Agent",
+        "function_summary": "Consolidates count and generic row-level analyses into a single natural-language answer based on task_type routing.",
+        "score": 0.9,
+        "raw_search_score": 0.0317540317773819,
+        "weak_overall_coverage": true,
+        "matched_for": "Provide natural-language answers in a few seconds by combining approved internal",
+        "capabilities": [
+          "answer_consolidation"
+        ]
+      },
+      {
+        "agent_id": "eryl_semantic_rag_agent_chain",
+        "name": "Eryl Semantic RAG Agent Chain",
+        "category": "Document & Data",
+        "origin_client": "Mars",
+        "origin_project": "Mars Sales Genie (Copilot) / Unified View",
+        "function_summary": "Retrieves and answers from indexed retail policy and unstructured documents (Chocolate_Confectionery_Retail_Policy.docx, emails, guidelines) using Azure AI Search vector + semantic retrieval.",
+        "score": 0.9,
+        "raw_search_score": 0.03154495730996132,
+        "weak_overall_coverage": true,
+        "matched_for": "User question intake, Intent inference for broad questions, Parallel retrieval f",
+        "capabilities": [
+          "retrieval",
+          "document_qa"
+        ]
+      },
+      {
+        "agent_id": "graphrag_index_query_agent",
+        "name": "GraphRAG Index & Query Agent",
+        "category": "Document & Data",
+        "origin_client": "JPMorgan Chase (JPMC)",
+        "origin_project": "JPMC KYC Risk Pre-Screening",
+        "function_summary": "Indexes per-project KYC documents into a knowledge graph with entity/community extraction and embeddings; answers analyst questions via local, global, drift, or basic search methods.",
+        "score": 0.86,
+        "raw_search_score": 0,
+        "weak_overall_coverage": false,
+        "matched_for": "capability_slot:document_retrieval",
+        "capabilities": [
+          "retrieval",
+          "indexing"
+        ]
+      },
+      {
+        "agent_id": "pipeline_intent_classifier",
+        "name": "Pipeline Intent Classifier",
+        "category": "Document & Data",
+        "origin_client": "Mars",
+        "origin_project": "Mars Sales Genie (Copilot) / Unified View",
+        "function_summary": "Classifies each user question into vision_only, vision_then_unified, or unified_only and flags multi-shelf comparisons for SQL-only routing.",
+        "score": 0.85,
+        "raw_search_score": 0,
+        "weak_overall_coverage": false,
+        "matched_for": "capability_slot:intent_routing",
+        "capabilities": [
+          "routing"
+        ]
+      },
+      {
+        "agent_id": "quin_sql_agent_chain",
+        "name": "Quin SQL Agent Chain",
+        "category": "Sales & Revenue",
+        "origin_client": "Mars",
+        "origin_project": "Mars Sales Genie (Copilot) / Unified View",
+        "function_summary": "AutoGen multi-agent chain that generates, executes, and critiques SQL Server queries on mars schema tables (Mars_Sales_Data, shelf_visit, retail_planogram_stocks, etc.) and returns structured sales/inventory insights.",
+        "score": 0.85,
+        "raw_search_score": 0,
+        "weak_overall_coverage": false,
+        "matched_for": "capability_slot:structured_sql",
+        "capabilities": [
+          "sql_generation",
+          "sql_execution"
+        ]
+      },
+      {
+        "agent_id": "final_answer_rewriter",
+        "name": "Final Answer Rewriter",
+        "category": "Document & Data",
+        "origin_client": "Mars",
+        "origin_project": "Mars Sales Genie (Copilot) / Unified View",
+        "function_summary": "Post-processes combined vision+SQL+semantic draft answers into concise structured user-facing text without adding new facts.",
+        "score": 0.85,
+        "raw_search_score": 0,
+        "weak_overall_coverage": false,
+        "matched_for": "capability_slot:answer_synthesis",
+        "capabilities": [
+          "answer_consolidation"
+        ]
+      },
+      {
+        "agent_id": "planogram_vision_llm_suite",
+        "name": "Planogram Vision LLM Suite",
+        "category": "Quality & Compliance",
+        "origin_client": "Mars",
+        "origin_project": "Mars Sales Genie (Copilot) / Unified View",
+        "function_summary": "Azure OpenAI vision functions for shelf-level product extraction, row counting, generic row description, daily KPI JSON, and final natural-language shelf answers after Roboflow cropping.",
+        "score": 0.5527124999999999,
+        "raw_search_score": 0.012048192322254181,
+        "weak_overall_coverage": true,
+        "matched_for": "Internal analysts and managers need a fast, read-only chatbot that can answer qu",
+        "capabilities": [
+          "visual_qa"
+        ]
+      }
+    ],
+    "summary_markdown": "This Phase 3 plan implements a fast, read-only internal chatbot that answers from approved documents and structured database data only, with no external knowledge use. The flow starts with a custom intake gateway, then uses the catalog-first orchestration model to infer intent and fan out into parallel document retrieval and SQL execution paths. Retrieved evidence is merged in a custom conflict-and-strength gate, then passed through catalog answer-consolidation agents to produce the final user response.\n\nThe architecture is strongly reuse-oriented: 5 of 7 nodes are reuse/adapt decisions, meeting the catalog-first target. Reused Affine agents are Pipeline Intent Classifier for routing, Eryl Semantic RAG Agent Chain for document retrieval, Quin SQL Agent Chain for structured data access, Final Answer Consolidation Agent for grounded synthesis, and Final Answer Rewriter for final response shaping. Custom build is limited to the chatbot intake gateway and the cross-source evidence conflict check, where the catalog does not provide an explicit capability-aligned fit.\n\nThe main flow is left-to-right with one entry and one exit: intake -> intent routing -> parallel document and SQL retrieval -> evidence conflict/strength check -> grounded answer synthesis -> confidence-aware response delivery. There is no human-in-the-loop gate because the spec explicitly states that no human review is required in the normal flow. Integrations implied by the spec are the internal document index and the internal database, both accessed read-only.\n\nPrimary risks are ensuring the SQL path remains strictly read-only, preventing the answer layer from introducing unsupported world knowledge, and implementing robust conflict detection when document and table evidence disagree or are both weak. The custom evidence gate should standardize evidence payloads from both retrieval systems so the downstream consolidation and rewriting agents can consistently surface both sides and indicate confidence.",
+    "open_questions": [
+      "What database platform and schema should the SQL agent target in production?",
+      "Is an existing internal document index already available, or must indexing be added as a separate upstream process outside this runtime flow?",
+      "Should the final response expose source snippets or table references internally even though formal citations are not required?",
+      "Inferred required_capability=sql_generation for 'Evidence Conflict and Strength Check' because the step strongly matched a known capability class."
+    ],
+    "validation": {
+      "overall": "warn",
+      "pass_count": 11,
+      "warn_count": 7,
+      "fail_count": 0,
+      "structural_fail_count": 0,
+      "unresolved_actionable_count": 7,
+      "can_approve": false,
+      "approval_hint": "7 issue(s) still need a fix or review.",
+      "items": [
+        {
+          "level": "pass",
+          "code": "has_nodes",
+          "message": "Graph has 7 components and 7 connections.",
+          "node_id": null,
+          "finding_id": "has_nodes:_",
+          "finding_key": "has_nodes:_",
+          "blocks_approval": false,
+          "help_text": "",
+          "remediations": [],
+          "resolved": false,
+          "resolution": null
+        },
+        {
+          "level": "pass",
+          "code": "catalog_fit",
+          "message": "Catalog agent 'Pipeline Intent Classifier' aligns with this step.",
+          "node_id": "question-intake-gateway",
+          "finding_id": "catalog_fit:question-intake-gateway",
+          "finding_key": "catalog_fit:question-intake-gateway",
+          "blocks_approval": false,
+          "help_text": "",
+          "remediations": [],
+          "resolved": false,
+          "resolution": null
+        },
+        {
+          "level": "pass",
+          "code": "catalog_fit",
+          "message": "Catalog agent 'Pipeline Intent Classifier' aligns with this step.",
+          "node_id": "intent-routing-agent",
+          "finding_id": "catalog_fit:intent-routing-agent",
+          "finding_key": "catalog_fit:intent-routing-agent",
+          "blocks_approval": false,
+          "help_text": "",
+          "remediations": [],
+          "resolved": false,
+          "resolution": null
+        },
+        {
+          "level": "warn",
+          "code": "weak_overall_coverage",
+          "message": "Catalog coverage for 'Document Retrieval' is weak overall (top raw search score 0.0315).",
+          "node_id": "document-retrieval-agent",
+          "finding_id": "weak_overall_coverage:document-retrieval-agent",
+          "finding_key": "weak_overall_coverage:document-retrieval-agent",
+          "blocks_approval": false,
+          "help_text": "",
+          "remediations": [
+            {
+              "id": "switch_catalog_graphrag_index_query_agent",
+              "label": "Try: GraphRAG Index & Query Agent",
+              "description": "Switch to alternate catalog agent (score 0.86).",
+              "finding_id": "weak_overall_coverage:document-retrieval-agent",
+              "action": "set_decision",
+              "node_id": "document-retrieval-agent",
+              "decision": "reuse",
+              "agent_id": "graphrag_index_query_agent",
+              "agent_name": "GraphRAG Index & Query Agent",
+              "catalog_score": 0.86,
+              "gateway_label": null,
+              "question_text": null,
+              "edge_from": null,
+              "edge_to": null
+            },
+            {
+              "id": "mark_build",
+              "label": "Build custom instead",
+              "description": "Drop catalog reuse for this step.",
+              "finding_id": "weak_overall_coverage:document-retrieval-agent",
+              "action": "set_decision",
+              "node_id": "document-retrieval-agent",
+              "decision": "build",
+              "agent_id": null,
+              "agent_name": null,
+              "catalog_score": null,
+              "gateway_label": null,
+              "question_text": null,
+              "edge_from": null,
+              "edge_to": null
+            },
+            {
+              "id": "acknowledge_fit",
+              "label": "Accept current match",
+              "description": "Keep assignment; you reviewed fit manually.",
+              "finding_id": "weak_overall_coverage:document-retrieval-agent",
+              "action": "acknowledge",
+              "node_id": null,
+              "decision": null,
+              "agent_id": null,
+              "agent_name": null,
+              "catalog_score": null,
+              "gateway_label": null,
+              "question_text": null,
+              "edge_from": null,
+              "edge_to": null
+            }
+          ],
+          "resolved": false,
+          "resolution": null
+        },
+        {
+          "level": "pass",
+          "code": "catalog_fit",
+          "message": "Catalog agent 'Eryl Semantic RAG Agent Chain' aligns with this step.",
+          "node_id": "document-retrieval-agent",
+          "finding_id": "catalog_fit:document-retrieval-agent",
+          "finding_key": "catalog_fit:document-retrieval-agent",
+          "blocks_approval": false,
+          "help_text": "",
+          "remediations": [],
+          "resolved": false,
+          "resolution": null
+        },
+        {
+          "level": "pass",
+          "code": "catalog_fit",
+          "message": "Catalog agent 'Quin SQL Agent Chain' aligns with this step.",
+          "node_id": "sql-query-agent",
+          "finding_id": "catalog_fit:sql-query-agent",
+          "finding_key": "catalog_fit:sql-query-agent",
+          "blocks_approval": false,
+          "help_text": "",
+          "remediations": [],
+          "resolved": false,
+          "resolution": null
+        },
+        {
+          "level": "pass",
+          "code": "build_ok",
+          "message": "Custom build for 'Evidence Conflict and Strength Check' \u2014 confirm no catalog alternative.",
+          "node_id": "evidence-conflict-gateway",
+          "finding_id": "build_ok:evidence-conflict-gateway",
+          "finding_key": "build_ok:evidence-conflict-gateway",
+          "blocks_approval": false,
+          "help_text": "",
+          "remediations": [],
+          "resolved": false,
+          "resolution": null
+        },
+        {
+          "level": "warn",
+          "code": "weak_overall_coverage",
+          "message": "Catalog coverage for 'Grounded Answer Synthesis' is weak overall (top raw search score 0.0318).",
+          "node_id": "answer-synthesis-agent",
+          "finding_id": "weak_overall_coverage:answer-synthesis-agent",
+          "finding_key": "weak_overall_coverage:answer-synthesis-agent",
+          "blocks_approval": false,
+          "help_text": "",
+          "remediations": [
+            {
+              "id": "switch_catalog_final_answer_rewriter",
+              "label": "Try: Final Answer Rewriter",
+              "description": "Switch to alternate catalog agent (score 0.85).",
+              "finding_id": "weak_overall_coverage:answer-synthesis-agent",
+              "action": "set_decision",
+              "node_id": "answer-synthesis-agent",
+              "decision": "reuse",
+              "agent_id": "final_answer_rewriter",
+              "agent_name": "Final Answer Rewriter",
+              "catalog_score": 0.85,
+              "gateway_label": null,
+              "question_text": null,
+              "edge_from": null,
+              "edge_to": null
+            },
+            {
+              "id": "mark_build",
+              "label": "Build custom instead",
+              "description": "Drop catalog reuse for this step.",
+              "finding_id": "weak_overall_coverage:answer-synthesis-agent",
+              "action": "set_decision",
+              "node_id": "answer-synthesis-agent",
+              "decision": "build",
+              "agent_id": null,
+              "agent_name": null,
+              "catalog_score": null,
+              "gateway_label": null,
+              "question_text": null,
+              "edge_from": null,
+              "edge_to": null
+            },
+            {
+              "id": "acknowledge_fit",
+              "label": "Accept current match",
+              "description": "Keep assignment; you reviewed fit manually.",
+              "finding_id": "weak_overall_coverage:answer-synthesis-agent",
+              "action": "acknowledge",
+              "node_id": null,
+              "decision": null,
+              "agent_id": null,
+              "agent_name": null,
+              "catalog_score": null,
+              "gateway_label": null,
+              "question_text": null,
+              "edge_from": null,
+              "edge_to": null
+            }
+          ],
+          "resolved": false,
+          "resolution": null
+        },
+        {
+          "level": "pass",
+          "code": "catalog_fit",
+          "message": "Catalog agent 'Final Answer Consolidation Agent' aligns with this step.",
+          "node_id": "answer-synthesis-agent",
+          "finding_id": "catalog_fit:answer-synthesis-agent",
+          "finding_key": "catalog_fit:answer-synthesis-agent",
+          "blocks_approval": false,
+          "help_text": "",
+          "remediations": [],
+          "resolved": false,
+          "resolution": null
+        },
+        {
+          "level": "pass",
+          "code": "catalog_fit",
+          "message": "Catalog agent 'Final Answer Rewriter' aligns with this step.",
+          "node_id": "response-rewriter-agent",
+          "finding_id": "catalog_fit:response-rewriter-agent",
+          "finding_key": "catalog_fit:response-rewriter-agent",
+          "blocks_approval": false,
+          "help_text": "",
+          "remediations": [],
+          "resolved": false,
+          "resolution": null
+        },
+        {
+          "level": "warn",
+          "code": "hitl_missing",
+          "message": "Spec requires human-in-the-loop but no 'human' step appears on the graph.",
+          "node_id": null,
+          "finding_id": "hitl_missing:_",
+          "finding_key": "hitl_missing:_",
+          "blocks_approval": false,
+          "help_text": "Add a human approval step or acknowledge HITL is external.",
+          "remediations": [
+            {
+              "id": "add_human_step",
+              "label": "Add human approval step",
+              "description": "Insert an analyst review node into the flow.",
+              "finding_id": "hitl_missing:_",
+              "action": "add_human_node",
+              "node_id": null,
+              "decision": null,
+              "agent_id": null,
+              "agent_name": null,
+              "catalog_score": null,
+              "gateway_label": null,
+              "question_text": null,
+              "edge_from": null,
+              "edge_to": null
+            },
+            {
+              "id": "acknowledge_hitl",
+              "label": "HITL handled outside diagram",
+              "description": "Human review happens in another system.",
+              "finding_id": "hitl_missing:_",
+              "action": "acknowledge",
+              "node_id": null,
+              "decision": null,
+              "agent_id": null,
+              "agent_name": null,
+              "catalog_score": null,
+              "gateway_label": null,
+              "question_text": null,
+              "edge_from": null,
+              "edge_to": null
+            }
+          ],
+          "resolved": false,
+          "resolution": null
+        },
+        {
+          "level": "pass",
+          "code": "use_case_aligned",
+          "message": "Architecture text overlaps with stated use case.",
+          "node_id": null,
+          "finding_id": "use_case_aligned:_",
+          "finding_key": "use_case_aligned:_",
+          "blocks_approval": false,
+          "help_text": "",
+          "remediations": [],
+          "resolved": false,
+          "resolution": null
+        },
+        {
+          "level": "pass",
+          "code": "flow_documented",
+          "message": "Architectural flow was confirmed in the interview \u2014 compare visually to canvas.",
+          "node_id": null,
+          "finding_id": "flow_documented:_",
+          "finding_key": "flow_documented:_",
+          "blocks_approval": false,
+          "help_text": "Validation checks structure and spec overlap, not full business correctness.",
+          "remediations": [],
+          "resolved": false,
+          "resolution": null
+        },
+        {
+          "level": "warn",
+          "code": "open_question",
+          "message": "What database platform and schema should the SQL agent target in production?",
+          "node_id": null,
+          "finding_id": "open_question:0",
+          "finding_key": "open_question:0",
+          "blocks_approval": false,
+          "help_text": "Resolve or acknowledge open planning questions.",
+          "remediations": [
+            {
+              "id": "resolve_question",
+              "label": "Mark question resolved",
+              "description": "Remove this open question from the plan.",
+              "finding_id": "open_question:0",
+              "action": "remove_open_question",
+              "node_id": null,
+              "decision": null,
+              "agent_id": null,
+              "agent_name": null,
+              "catalog_score": null,
+              "gateway_label": null,
+              "question_text": "What database platform and schema should the SQL agent target in production?",
+              "edge_from": null,
+              "edge_to": null
+            },
+            {
+              "id": "keep_question",
+              "label": "Keep tracking this question",
+              "description": "Leave open; acknowledge you are aware.",
+              "finding_id": "open_question:0",
+              "action": "acknowledge",
+              "node_id": null,
+              "decision": null,
+              "agent_id": null,
+              "agent_name": null,
+              "catalog_score": null,
+              "gateway_label": null,
+              "question_text": null,
+              "edge_from": null,
+              "edge_to": null
+            }
+          ],
+          "resolved": false,
+          "resolution": null
+        },
+        {
+          "level": "warn",
+          "code": "open_question",
+          "message": "Is an existing internal document index already available, or must indexing be added as a separate upstream process outside this runtime flow?",
+          "node_id": null,
+          "finding_id": "open_question:1",
+          "finding_key": "open_question:1",
+          "blocks_approval": false,
+          "help_text": "Resolve or acknowledge open planning questions.",
+          "remediations": [
+            {
+              "id": "resolve_question",
+              "label": "Mark question resolved",
+              "description": "Remove this open question from the plan.",
+              "finding_id": "open_question:1",
+              "action": "remove_open_question",
+              "node_id": null,
+              "decision": null,
+              "agent_id": null,
+              "agent_name": null,
+              "catalog_score": null,
+              "gateway_label": null,
+              "question_text": "Is an existing internal document index already available, or must indexing be added as a separate upstream process outside this runtime flow?",
+              "edge_from": null,
+              "edge_to": null
+            },
+            {
+              "id": "keep_question",
+              "label": "Keep tracking this question",
+              "description": "Leave open; acknowledge you are aware.",
+              "finding_id": "open_question:1",
+              "action": "acknowledge",
+              "node_id": null,
+              "decision": null,
+              "agent_id": null,
+              "agent_name": null,
+              "catalog_score": null,
+              "gateway_label": null,
+              "question_text": null,
+              "edge_from": null,
+              "edge_to": null
+            }
+          ],
+          "resolved": false,
+          "resolution": null
+        },
+        {
+          "level": "warn",
+          "code": "open_question",
+          "message": "Should the final response expose source snippets or table references internally even though formal citations are not required?",
+          "node_id": null,
+          "finding_id": "open_question:2",
+          "finding_key": "open_question:2",
+          "blocks_approval": false,
+          "help_text": "Resolve or acknowledge open planning questions.",
+          "remediations": [
+            {
+              "id": "resolve_question",
+              "label": "Mark question resolved",
+              "description": "Remove this open question from the plan.",
+              "finding_id": "open_question:2",
+              "action": "remove_open_question",
+              "node_id": null,
+              "decision": null,
+              "agent_id": null,
+              "agent_name": null,
+              "catalog_score": null,
+              "gateway_label": null,
+              "question_text": "Should the final response expose source snippets or table references internally even though formal citations are not required?",
+              "edge_from": null,
+              "edge_to": null
+            },
+            {
+              "id": "keep_question",
+              "label": "Keep tracking this question",
+              "description": "Leave open; acknowledge you are aware.",
+              "finding_id": "open_question:2",
+              "action": "acknowledge",
+              "node_id": null,
+              "decision": null,
+              "agent_id": null,
+              "agent_name": null,
+              "catalog_score": null,
+              "gateway_label": null,
+              "question_text": null,
+              "edge_from": null,
+              "edge_to": null
+            }
+          ],
+          "resolved": false,
+          "resolution": null
+        },
+        {
+          "level": "warn",
+          "code": "open_question",
+          "message": "Inferred required_capability=sql_generation for 'Evidence Conflict and Strength Check' because the step strongly matched a known capability class.",
+          "node_id": null,
+          "finding_id": "open_question:3",
+          "finding_key": "open_question:3",
+          "blocks_approval": false,
+          "help_text": "Resolve or acknowledge open planning questions.",
+          "remediations": [
+            {
+              "id": "resolve_question",
+              "label": "Mark question resolved",
+              "description": "Remove this open question from the plan.",
+              "finding_id": "open_question:3",
+              "action": "remove_open_question",
+              "node_id": null,
+              "decision": null,
+              "agent_id": null,
+              "agent_name": null,
+              "catalog_score": null,
+              "gateway_label": null,
+              "question_text": "Inferred required_capability=sql_generation for 'Evidence Conflict and Strength Check' because the step strongly matched a known capability class.",
+              "edge_from": null,
+              "edge_to": null
+            },
+            {
+              "id": "keep_question",
+              "label": "Keep tracking this question",
+              "description": "Leave open; acknowledge you are aware.",
+              "finding_id": "open_question:3",
+              "action": "acknowledge",
+              "node_id": null,
+              "decision": null,
+              "agent_id": null,
+              "agent_name": null,
+              "catalog_score": null,
+              "gateway_label": null,
+              "question_text": null,
+              "edge_from": null,
+              "edge_to": null
+            }
+          ],
+          "resolved": false,
+          "resolution": null
+        },
+        {
+          "level": "pass",
+          "code": "validation_scope",
+          "message": "Automated checks cover structure, catalog ids, and spec overlap \u2014 not full business proof.",
+          "node_id": null,
+          "finding_id": "validation_scope:_",
+          "finding_key": "validation_scope:_",
+          "blocks_approval": false,
+          "help_text": "",
+          "remediations": [],
+          "resolved": false,
+          "resolution": null
+        }
+      ],
+      "node_status": {
+        "question-intake-gateway": "pass",
+        "intent-routing-agent": "pass",
+        "document-retrieval-agent": "warn",
+        "sql-query-agent": "pass",
+        "evidence-conflict-gateway": "pass",
+        "answer-synthesis-agent": "warn",
+        "response-rewriter-agent": "pass"
+      }
+    },
+    "validation_resolutions": {},
+    "architecture_approved": false,
+    "node_explanations": {
+      "question-intake-gateway": {
+        "purpose": "Accept the analyst\u2019s natural-language question and admit only read-only internal Q&A requests into the workflow.",
+        "role_in_workflow": "This is the entry point for every chatbot request. It receives the user question, frames it for orchestration, and passes it into the intent step so the rest of the pipeline can stay focused on retrieval and answer generation.",
+        "why_it_exists": "This node reuses the Pipeline Intent Classifier because the same routing-oriented capability can reliably normalize incoming questions at the front door. It also exists as a guardrail boundary so the workflow starts from a read-only, internal-only Q&A contract rather than allowing any write-back or open-ended action behavior.",
+        "consumes_from": [
+          "user question from chatbot interface"
+        ],
+        "feeds_into": [
+          "Intent Inference and Route Selection"
+        ],
+        "chat_relationship": "The user asked for a read-only Q&A chatbot for internal analysts and managers, so this step enforces that the request enters the system as an internal question-answering task rather than an action, recommendation, or database update.",
+        "execution_summary": "Receives the user\u2019s question and starts the workflow under read-only internal Q&A guardrails."
+      },
+      "intent-routing-agent": {
+        "purpose": "Infer likely intent for broad questions and route the request into the document and structured-data retrieval paths.",
+        "role_in_workflow": "After intake, this step interprets what the user is really asking, especially when the prompt is broad or underspecified. It then sends the same request into parallel retrieval branches so document evidence and database evidence can be gathered quickly in the same run.",
+        "why_it_exists": "This node reuses the Pipeline Intent Classifier because it is a direct catalog fit for routing decisions. It is necessary because the user explicitly said that if a question is too broad, the system should guess the likely intent and answer rather than stop for clarification.",
+        "consumes_from": [
+          "Question Intake Gateway",
+          "user question"
+        ],
+        "feeds_into": [
+          "Document Retrieval",
+          "Structured Data Query"
+        ],
+        "chat_relationship": "The user said broad questions should be handled by guessing likely intent and answering, and also wanted one answer that can combine documents and tables, so this step performs that inference and launches both retrieval routes.",
+        "execution_summary": "Infers the likely meaning of the question and routes it into parallel document and SQL retrieval."
+      },
+      "document-retrieval-agent": {
+        "purpose": "Retrieve relevant passages from approved indexed internal documents that may help answer the question.",
+        "role_in_workflow": "This branch handles the unstructured side of the answer. It searches internal PDFs, DOCX files, and other approved document content for semantically relevant passages and forwards that evidence for cross-source comparison.",
+        "why_it_exists": "This node reuses the Eryl Semantic RAG Agent Chain because it already supports semantic retrieval over indexed internal documents. It exists to satisfy the requirement that answers come only from approved internal sources and that document context be combined with tabular facts when needed.",
+        "consumes_from": [
+          "Intent Inference and Route Selection",
+          "document retrieval route"
+        ],
+        "feeds_into": [
+          "Evidence Conflict and Strength Check",
+          "document evidence"
+        ],
+        "chat_relationship": "The user asked for a database plus document chatbot, wanted answers based only on approved internal sources, and wanted document context included in combined answers, which is exactly what this retrieval step provides.",
+        "execution_summary": "Finds relevant evidence from approved internal documents for the current question."
+      },
+      "sql-query-agent": {
+        "purpose": "Generate and run read-only SQL to fetch relevant rows, facts, or aggregates from internal structured data.",
+        "role_in_workflow": "This branch handles the structured-data side of the answer in parallel with document retrieval. It translates the user\u2019s question into safe read-only SQL, executes it against internal tables, and returns the resulting evidence for downstream comparison and synthesis.",
+        "why_it_exists": "This node reuses the Quin SQL Agent Chain because it is a strong direct fit for SQL generation and execution against internal data sources. It exists because the user wants the chatbot to answer from database data as well as documents, while remaining strictly read-only with no write-back behavior.",
+        "consumes_from": [
+          "Intent Inference and Route Selection",
+          "sql retrieval route"
+        ],
+        "feeds_into": [
+          "Evidence Conflict and Strength Check",
+          "table evidence"
+        ],
+        "chat_relationship": "The user explicitly asked for a database + document chatbot, required read-only Q&A, and wanted combined answers using tabular facts, so this step is the structured-data retrieval path that fulfills those constraints.",
+        "execution_summary": "Runs read-only SQL to gather the structured evidence needed to answer the question."
+      },
+      "evidence-conflict-gateway": {
+        "purpose": "Compare document and database evidence, detect disagreements, and assess whether support is strong, weak, or incomplete.",
+        "role_in_workflow": "This is the reconciliation checkpoint after both retrieval branches finish. It merges the two evidence streams into a grounded bundle, marks conflicts instead of silently resolving them, and annotates weak evidence so the answering layer knows how cautious to be.",
+        "why_it_exists": "This node is built custom because no catalog match explicitly covered cross-source conflict detection together with weak-evidence handling. It is central to the design because the user asked the system to show both sides and flag disagreements, and to still answer with a confidence note when evidence is weak.",
+        "consumes_from": [
+          "Document Retrieval",
+          "Structured Data Query",
+          "document evidence",
+          "table evidence"
+        ],
+        "feeds_into": [
+          "Grounded Answer Synthesis",
+          "grounded evidence bundle"
+        ],
+        "chat_relationship": "The user said that when documents and database disagree, the chatbot should show both and flag the conflict, and when evidence is weak it should still answer with a confidence note; this step creates exactly those conflict and strength signals.",
+        "execution_summary": "Reconciles document and SQL evidence, flags conflicts, and marks evidence strength before answer generation."
+      },
+      "answer-synthesis-agent": {
+        "purpose": "Compose one grounded draft answer from the approved document and database evidence without adding outside knowledge.",
+        "role_in_workflow": "Once the evidence has been reconciled, this step turns the evidence bundle into a coherent draft response. It combines both source types into a single natural-language answer while preserving conflict and evidence-strength signals for the final delivery layer.",
+        "why_it_exists": "This node reuses the Final Answer Consolidation Agent because it is the closest catalog fit for combining multiple evidence streams into one answer. It exists to enforce the user\u2019s requirement that the chatbot answer using approved internal sources only and combine document context with tabular facts in one response.",
+        "consumes_from": [
+          "Evidence Conflict and Strength Check",
+          "grounded evidence bundle"
+        ],
+        "feeds_into": [
+          "Confidence-Aware Response Delivery",
+          "draft answer with evidence status"
+        ],
+        "chat_relationship": "The user wanted one answer that combines both documents and tables, wanted answer-only behavior rather than recommendations, and required that the model not rely on outside knowledge, all of which are handled in this grounded synthesis step.",
+        "execution_summary": "Builds a single grounded draft answer from the reconciled internal evidence."
+      },
+      "response-rewriter-agent": {
+        "purpose": "Convert the grounded draft into concise user-facing text that clearly communicates confidence and any source conflicts.",
+        "role_in_workflow": "This is the final presentation step before the answer is returned to the user. It rewrites the synthesized draft for clarity and speed of consumption while preserving the factual content, conflict flags, and confidence wording determined upstream.",
+        "why_it_exists": "This node adapts the Final Answer Rewriter because the existing rewriter is suitable for polishing combined answers but needs to preserve explicit conflict and confidence language for this use case. It exists because the user wanted fast natural-language answers without citations, so the final response must rely on careful wording and guardrails rather than detailed source references.",
+        "consumes_from": [
+          "Grounded Answer Synthesis",
+          "draft answer with evidence status"
+        ],
+        "feeds_into": [
+          "final chatbot response to user"
+        ],
+        "chat_relationship": "The user asked for fast answers in a few seconds, no citations, and answers that still include a confidence note and conflict flagging when needed, so this step formats the final response accordingly without introducing new facts.",
+        "execution_summary": "Polishes the grounded draft into the final user response with confidence and conflict wording preserved."
+      }
+    },
+    "logic_validation": {
+      "is_valid": false,
+      "summary": "Workflow is close, but it has a major capability mismatch on conflict checking and is missing an explicit internal-only/read-only validation step before answer generation.",
+      "issues": [
+        "The 'Evidence Conflict and Strength Check' node is assigned required_capability 'sql_generation', which does not match its actual function of comparing evidence, detecting conflicts, and assessing confidence.",
+        "There is no explicit validation step ensuring the final answer is grounded only in approved internal sources and does not introduce unsupported external knowledge.",
+        "The intake and intent nodes both use the same routing agent in sequence, creating redundant routing without a distinct value-add step.",
+        "Read-only access is described in text but not enforced as a workflow validation/control step beyond relying on the SQL agent behavior.",
+        "The final flow does not explicitly handle the edge case where only one source returns evidence versus both sources returning none; this should be normalized before synthesis."
+      ],
+      "suggestions": [
+        "Replace the conflict-check node capability with a custom validation/comparison step using a build decision and null capability rather than forcing an incorrect closed-vocabulary tag.",
+        "Add a groundedness/policy validation step after synthesis to verify the answer uses only retrieved internal evidence and preserves conflict/weak-evidence annotations.",
+        "Collapse or repurpose the intake gateway so only one routing/intent inference step remains before parallel retrieval.",
+        "Ensure the SQL path is configured as read-only at execution time and that this constraint is surfaced in the workflow semantics.",
+        "Normalize retrieval outcomes into statuses such as both_sources, docs_only, sql_only, weak_evidence, and no_evidence before answer synthesis."
+      ],
+      "operations": [
+        {
+          "operation": "delete_node",
+          "reference_node": "question-intake-gateway"
+        },
+        {
+          "operation": "replace_agent",
+          "reference_node": "evidence-conflict-gateway",
+          "agent_id": "BUILD_NEW"
+        },
+        {
+          "operation": "insert_node",
+          "reference_node": "response-rewriter-agent",
+          "position": "before",
+          "node_type": "agent",
+          "label": "Grounded Answer Validation",
+          "agent_id": "BUILD_NEW"
+        },
+        {
+          "operation": "add_edge",
+          "from": "intent-routing-agent",
+          "to": "document-retrieval-agent"
+        },
+        {
+          "operation": "add_edge",
+          "from": "intent-routing-agent",
+          "to": "sql-query-agent"
+        }
+      ],
+      "recommended_workflow": {
+        "description": "The corrected flow starts with a single intent-routing step that interprets broad user questions and launches document retrieval and read-only SQL retrieval in parallel. A custom reconciliation step compares evidence, flags conflicts, and marks evidence strength; then answer synthesis produces a grounded response, which is validated to ensure it uses only approved internal evidence before final delivery.",
+        "steps": [
+          {
+            "id": "intent-routing-agent",
+            "label": "Intent Inference and Route Selection",
+            "type": "agent",
+            "decision": "reuse",
+            "agent_name": "Pipeline Intent Classifier",
+            "required_capability": "routing",
+            "reason_code": null,
+            "justification": null
+          },
+          {
+            "id": "document-retrieval-agent",
+            "label": "Document Retrieval",
+            "type": "agent",
+            "decision": "reuse",
+            "agent_name": "Eryl Semantic RAG Agent Chain",
+            "required_capability": "retrieval",
+            "reason_code": null,
+            "justification": null
+          },
+          {
+            "id": "sql-query-agent",
+            "label": "Structured Data Query",
+            "type": "agent",
+            "decision": "reuse",
+            "agent_name": "Quin SQL Agent Chain",
+            "required_capability": "sql_execution",
+            "reason_code": null,
+            "justification": null
+          },
+          {
+            "id": "evidence-reconciliation-step",
+            "label": "Evidence Reconciliation and Strength Check",
+            "type": "custom",
+            "decision": "build",
+            "agent_name": null,
+            "required_capability": null,
+            "reason_code": "wrong_capability_match",
+            "justification": "The existing node function is cross-source comparison and confidence assessment, not SQL generation."
+          },
+          {
+            "id": "answer-synthesis-agent",
+            "label": "Grounded Answer Synthesis",
+            "type": "agent",
+            "decision": "reuse",
+            "agent_name": "Final Answer Rewriter",
+            "required_capability": "answer_consolidation",
+            "reason_code": null,
+            "justification": null
+          },
+          {
+            "id": "grounded-answer-validation",
+            "label": "Approved-Source Grounding Validation",
+            "type": "agent",
+            "decision": "reuse",
+            "agent_name": "Final Answer Rewriter",
+            "required_capability": "policy_validation",
+            "reason_code": "missing_step",
+            "justification": "A validation step is needed to enforce internal-only grounding and prevent unsupported facts before delivery."
+          },
+          {
+            "id": "response-rewriter-agent",
+            "label": "Confidence-Aware Response Delivery",
+            "type": "agent",
+            "decision": "adapt",
+            "agent_name": "Final Answer Rewriter",
+            "required_capability": "answer_consolidation",
+            "reason_code": null,
+            "justification": null
+          }
+        ],
+        "edges": [
+          {
+            "from": "intent-routing-agent",
+            "to": "document-retrieval-agent",
+            "label": "document retrieval route"
+          },
+          {
+            "from": "intent-routing-agent",
+            "to": "sql-query-agent",
+            "label": "sql retrieval route"
+          },
+          {
+            "from": "document-retrieval-agent",
+            "to": "evidence-reconciliation-step",
+            "label": "document evidence"
+          },
+          {
+            "from": "sql-query-agent",
+            "to": "evidence-reconciliation-step",
+            "label": "table evidence"
+          },
+          {
+            "from": "evidence-reconciliation-step",
+            "to": "answer-synthesis-agent",
+            "label": "grounded evidence bundle"
+          },
+          {
+            "from": "answer-synthesis-agent",
+            "to": "grounded-answer-validation",
+            "label": "draft answer"
+          },
+          {
+            "from": "grounded-answer-validation",
+            "to": "response-rewriter-agent",
+            "label": "validated grounded answer"
+          }
+        ]
+      },
+      "auto_apply_enabled": false,
+      "post_fix_status": "skipped",
+      "operations_applied": 0,
+      "operations_undone": 0
+    },
+    "post_fix_status": "skipped"
+  },
+  "exportedAt": "2026-07-22T12:05:44.680251+00:00"
+}
