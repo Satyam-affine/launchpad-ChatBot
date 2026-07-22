@@ -1,0 +1,26 @@
+{
+  "id": "question-intake-gateway",
+  "label": "Question Intake Gateway",
+  "type": "agent",
+  "agentId": "pipeline_intent_classifier",
+  "description": "Receives the user\u2019s question and starts the workflow under read-only internal Q&A guardrails.",
+  "inputs": [],
+  "outputs": [],
+  "reuseDecision": "reuse",
+  "catalogAgentName": "Pipeline Intent Classifier",
+  "rationale": "Auto-applied: catalog alternative identified during validation.",
+  "explanation": {
+    "purpose": "Accept the analyst\u2019s natural-language question and admit only read-only internal Q&A requests into the workflow.",
+    "role_in_workflow": "This is the entry point for every chatbot request. It receives the user question, frames it for orchestration, and passes it into the intent step so the rest of the pipeline can stay focused on retrieval and answer generation.",
+    "why_it_exists": "This node reuses the Pipeline Intent Classifier because the same routing-oriented capability can reliably normalize incoming questions at the front door. It also exists as a guardrail boundary so the workflow starts from a read-only, internal-only Q&A contract rather than allowing any write-back or open-ended action behavior.",
+    "consumes_from": [
+      "user question from chatbot interface"
+    ],
+    "feeds_into": [
+      "Intent Inference and Route Selection"
+    ],
+    "chat_relationship": "The user asked for a read-only Q&A chatbot for internal analysts and managers, so this step enforces that the request enters the system as an internal question-answering task rather than an action, recommendation, or database update.",
+    "execution_summary": "Receives the user\u2019s question and starts the workflow under read-only internal Q&A guardrails."
+  },
+  "status": "scaffold"
+}
