@@ -1,0 +1,28 @@
+{
+  "id": "answer-synthesis-agent",
+  "label": "Grounded Answer Synthesis",
+  "type": "agent",
+  "agentId": "final_answer_consolidation_agent",
+  "description": "Builds a single grounded draft answer from the reconciled internal evidence.",
+  "inputs": [],
+  "outputs": [],
+  "reuseDecision": "reuse",
+  "catalogAgentName": "Final Answer Consolidation Agent",
+  "rationale": "This agent is the closest direct fit for combining multiple evidence streams into a single grounded answer.",
+  "explanation": {
+    "purpose": "Compose one grounded draft answer from the approved document and database evidence without adding outside knowledge.",
+    "role_in_workflow": "Once the evidence has been reconciled, this step turns the evidence bundle into a coherent draft response. It combines both source types into a single natural-language answer while preserving conflict and evidence-strength signals for the final delivery layer.",
+    "why_it_exists": "This node reuses the Final Answer Consolidation Agent because it is the closest catalog fit for combining multiple evidence streams into one answer. It exists to enforce the user\u2019s requirement that the chatbot answer using approved internal sources only and combine document context with tabular facts in one response.",
+    "consumes_from": [
+      "Evidence Conflict and Strength Check",
+      "grounded evidence bundle"
+    ],
+    "feeds_into": [
+      "Confidence-Aware Response Delivery",
+      "draft answer with evidence status"
+    ],
+    "chat_relationship": "The user wanted one answer that combines both documents and tables, wanted answer-only behavior rather than recommendations, and required that the model not rely on outside knowledge, all of which are handled in this grounded synthesis step.",
+    "execution_summary": "Builds a single grounded draft answer from the reconciled internal evidence."
+  },
+  "status": "scaffold"
+}
